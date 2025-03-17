@@ -30,7 +30,7 @@ class Jugador(models.Model):
     edad = models.IntegerField()
     imagen = models.ImageField(upload_to ='media/', blank=True, null=True)
     def __str__(self):
-        return f"{self.nombre} {self.s_apellido} {self.s_apellido} "
+        return f"{self.nombre} {self.p_apellido} {self.s_apellido} "
 
 class Carpeta(models.Model):
     jugador = models.ForeignKey(Jugador, related_name ='carpetas', on_delete=models.CASCADE)

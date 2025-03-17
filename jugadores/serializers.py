@@ -24,9 +24,14 @@ class JugadorSerializer(serializers.ModelSerializer):
         return representation 
 
 class CarpetaSerializer(serializers.ModelSerializer):
+    subcarpetas = serializers.SerializerMethodField()
+
     class Meta:
         model = Carpeta
-        fields = '__all__'
+        fields = ['id', 'nombre', 'carpeta_padre', 'subcarpetas']
+
+    def get_subcarpetas(self, obj):
+        return CarpetaSerializer(obj.subcarpetas.all(), many=True).data
 
 class PDFSerializer(serializers.ModelSerializer):
     class Meta:

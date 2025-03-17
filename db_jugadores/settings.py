@@ -1,6 +1,7 @@
 
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,8 +30,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'jugadores',
-    'corsheaders'
+    'corsheaders',
+    'rest_framework_simplejwt'
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),  # Ejemplo: 30 días
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=60),
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -43,7 +53,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     
 ]
-
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000"
 ]

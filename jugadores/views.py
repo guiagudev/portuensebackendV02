@@ -1,13 +1,18 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from .models import Jugador, Carpeta, PDF
 from .serializers import JugadorSerializer, CarpetaSerializer, PDFSerializer
+from django.contrib.auth import authenticate, login
 from rest_framework import filters
+from rest_framework.permissions import IsAuthenticated
 
+
+        
 class JugadorViewSet(viewsets.ModelViewSet):
     queryset = Jugador.objects.all()
     serializer_class = JugadorSerializer
+    permission_classes = [IsAuthenticated]
     
     # Método para obtener las opciones para poblar dropdowns
     @action(detail=False, methods=['get'])
@@ -45,3 +50,9 @@ class JugadorViewSet(viewsets.ModelViewSet):
 class CarpetaViewSet(viewsets.ModelViewSet):
     queryset = Carpeta.objects.all()
     serializer_class = CarpetaSerializer
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        jugador_id = self.request.query_params.get('jugador_id')
+        if jugador_id:
+            return Carpeta.objects.filter(jugador_id=jugador_id, carpeta_padre=None)  # Solo carpetas raíz
+        return Carpeta.objects.none()
