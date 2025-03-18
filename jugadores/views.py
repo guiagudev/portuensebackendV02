@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 class JugadorViewSet(viewsets.ModelViewSet):
     queryset = Jugador.objects.all()
     serializer_class = JugadorSerializer
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     # Método para obtener las opciones para poblar dropdowns
     @action(detail=False, methods=['get'])
@@ -50,6 +50,7 @@ class JugadorViewSet(viewsets.ModelViewSet):
 class CarpetaViewSet(viewsets.ModelViewSet):
     queryset = Carpeta.objects.all()  # Definir un queryset básico
     serializer_class = CarpetaSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         jugador_id = self.request.query_params.get('jugador_id')
@@ -64,3 +65,12 @@ class CarpetaViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(id=carpeta_id)
 
         return queryset
+class PDFViewSet(viewsets.ModelViewSet):
+    queryset = PDF.objects.all()
+    serializer_class = PDFSerializer
+
+    def perform_create(self, serializer):
+        # Aquí puedes asignar automáticamente la carpeta al PDF
+        carpeta_id = self.request.data.get('carpeta')
+        carpeta = Carpeta.objects.get(id=carpeta_id)
+        serializer.save(carpeta=carpeta)
