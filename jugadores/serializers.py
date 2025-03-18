@@ -28,10 +28,13 @@ class CarpetaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Carpeta
-        fields = ['id', 'nombre', 'carpeta_padre', 'subcarpetas']
+        fields = '__all__'
 
     def get_subcarpetas(self, obj):
-        return CarpetaSerializer(obj.subcarpetas.all(), many=True).data
+        # Aquí estamos accediendo a las subcarpetas a través de la relación inversa
+        # "subcarpetas" es el `related_name` que definimos en `ForeignKey` para la relación recursiva
+        return CarpetaSerializer(obj.subcarpetas.all(), many=True).data if obj.subcarpetas.exists() else []
+
 
 class PDFSerializer(serializers.ModelSerializer):
     class Meta:

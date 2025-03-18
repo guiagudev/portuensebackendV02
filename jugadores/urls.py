@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import (
     )
 router = DefaultRouter()
 router.register(r'jugadores', JugadorViewSet)
-router.register(r'carpetas', CarpetaViewSet)
+router.register(r'carpetas', CarpetaViewSet, basename='carpeta')
 
 urlpatterns = [
     path('api/', include(router.urls)),

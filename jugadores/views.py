@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 class JugadorViewSet(viewsets.ModelViewSet):
     queryset = Jugador.objects.all()
     serializer_class = JugadorSerializer
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
     
     # Método para obtener las opciones para poblar dropdowns
     @action(detail=False, methods=['get'])
@@ -48,11 +48,19 @@ class JugadorViewSet(viewsets.ModelViewSet):
         print(f"Jugador {jugador.id} actualizado con éxito")  # Aquí podemos hacer una depuración
         
 class CarpetaViewSet(viewsets.ModelViewSet):
-    queryset = Carpeta.objects.all()
+    queryset = Carpeta.objects.all()  # Definir un queryset básico
     serializer_class = CarpetaSerializer
-    permission_classes = [IsAuthenticated]
+
     def get_queryset(self):
         jugador_id = self.request.query_params.get('jugador_id')
+        carpeta_id = self.request.query_params.get('id')
+
+        queryset = Carpeta.objects.all()  # Usar el queryset predeterminado
+
         if jugador_id:
-            return Carpeta.objects.filter(jugador_id=jugador_id, carpeta_padre=None)  # Solo carpetas raíz
-        return Carpeta.objects.none()
+            queryset = queryset.filter(jugador_id=jugador_id, carpeta_padre=None)  # Solo carpetas raíz
+
+        if carpeta_id:
+            queryset = queryset.filter(id=carpeta_id)
+
+        return queryset
