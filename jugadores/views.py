@@ -81,13 +81,13 @@ class CarpetaViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(id=carpeta_id)
 
         return queryset
-class PDFViewSet(viewsets.ModelViewSet):
+class PDFViewSet(viewsets.ModelViewSet): 
     
     
     
     queryset = PDF.objects.all()
     serializer_class = PDFSerializer
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         # Aquí puedes asignar automáticamente la carpeta al PDF
