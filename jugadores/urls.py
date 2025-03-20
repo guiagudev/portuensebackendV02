@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import JugadorViewSet, CarpetaViewSet
+from .views import JugadorViewSet, CarpetaViewSet, PDFViewSet, EventoViewSet
 from rest_framework_simplejwt.views import (
         TokenObtainPairView,
         TokenRefreshView,
@@ -8,6 +8,8 @@ from rest_framework_simplejwt.views import (
 router = DefaultRouter()
 router.register(r'jugadores', JugadorViewSet)
 router.register(r'carpetas', CarpetaViewSet, basename='carpeta')
+router.register(r'pdfs',PDFViewSet)
+router.register(r'eventos',EventoViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),

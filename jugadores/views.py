@@ -1,8 +1,8 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from .models import Jugador, Carpeta, PDF
-from .serializers import JugadorSerializer, CarpetaSerializer, PDFSerializer
+from .models import Jugador, Carpeta, PDF, Evento
+from .serializers import JugadorSerializer, CarpetaSerializer, PDFSerializer , EventoSerializer
 from django.contrib.auth import authenticate, login
 from rest_framework import filters
 from rest_framework.permissions import IsAuthenticated
@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 class JugadorViewSet(viewsets.ModelViewSet):
     queryset = Jugador.objects.all()
     serializer_class = JugadorSerializer
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
     
     # Método para obtener las opciones para poblar dropdowns
     @action(detail=False, methods=['get'])
@@ -66,11 +66,25 @@ class CarpetaViewSet(viewsets.ModelViewSet):
 
         return queryset
 class PDFViewSet(viewsets.ModelViewSet):
+    
+    
+    
     queryset = PDF.objects.all()
     serializer_class = PDFSerializer
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         # Aquí puedes asignar automáticamente la carpeta al PDF
         carpeta_id = self.request.data.get('carpeta')
         carpeta = Carpeta.objects.get(id=carpeta_id)
         serializer.save(carpeta=carpeta)
+        
+        
+class EventoViewSet (viewsets.ModelViewSet):
+    queryset = Evento.objects.all()
+    serializer_class = EventoSerializer
+    #permission_classes = [IsAuthenticated]
+    
+    
+  #  def perform_create(self, serializer):
+   #     serializer.save(creado_por=self.request.user)

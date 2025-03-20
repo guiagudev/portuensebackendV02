@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 class Jugador(models.Model):
     OPCIONES_CATEGORIA = [
         ('PREBEN', 'Prebenjamín'),
@@ -28,7 +28,8 @@ class Jugador(models.Model):
     equipo = models.CharField(max_length=10, choices=OPCIONES_EQUIPO, default = "M")
     posicion = models.CharField(max_length=50)
     edad = models.IntegerField()
-    imagen = models.ImageField(upload_to ='media/', blank=True, null=True)
+    imagen = models.ImageField(upload_to ='jugadores/', blank=True, null=True)
+    
     def __str__(self):
         return f"{self.nombre} {self.p_apellido} {self.s_apellido} "
 
@@ -42,9 +43,22 @@ class Carpeta(models.Model):
     
 class PDF (models.Model):
     carpeta = models.ForeignKey(Carpeta, related_name='pdfs', on_delete = models.CASCADE, null=True, blank = True)
-    archivo = models.FileField(upload_to='media/pdfs')
+    archivo = models.FileField(upload_to='pdfs')
     descripcion = models.CharField(max_length=255, blank=True)
     
     def __str__(self):
         return f"{self.archivo.name} - {self.carpeta.nombre}"
    
+   
+class Evento (models.Model):
+    titulo = models.CharField(max_length=200)
+    descripcion = models.TextField()
+    fecha_inicio = models.DateTimeField()
+    fecha_fin = models.DateTimeField(blank=True,null=True)
+    #creado_por = models.ForeignKey(User, on_delete=models.CASCADE) 
+
+    
+    def __str__(self):
+        return self.titulo
+                                   
+                                   

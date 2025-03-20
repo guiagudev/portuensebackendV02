@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Jugador, Carpeta,PDF
+from .models import Jugador, Carpeta,PDF, Evento
 
 class JugadorSerializer(serializers.ModelSerializer):
     # Usamos ChoiceField para los campos
@@ -22,6 +22,11 @@ class JugadorSerializer(serializers.ModelSerializer):
         representation['subcategoria'] = dict(Jugador.OPCIONES_SUBCATEGORIA).get(instance.subcategoria, instance.subcategoria)
         representation['equipo'] = dict(Jugador.OPCIONES_EQUIPO).get(instance.equipo, instance.equipo)
         return representation 
+    def get_imagen_url(self, obj):
+        request = self.context.get("request")
+        if obj.imagen:
+            return request.build_absolute_uri(obj.imagen.url)
+        return None
 
 class CarpetaSerializer(serializers.ModelSerializer):
     subcarpetas = serializers.SerializerMethodField()
@@ -40,3 +45,10 @@ class PDFSerializer(serializers.ModelSerializer):
     class Meta:
         model = PDF
         fields = '__all__'
+ 
+class EventoSerializer(serializers.ModelSerializer):
+     class Meta:
+         model = Evento
+         fields = ['id', 'titulo', 'descripcion', 'fecha_inicio', 'fecha_fin']
+        # read_only_fields = ['creado_por']
+
