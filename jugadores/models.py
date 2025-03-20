@@ -59,14 +59,14 @@ class PDF (models.Model):
    
    
 class Evento (models.Model):
-    titulo = models.CharField(max_length=200)
+    
     descripcion = models.TextField()
-    fecha_inicio = models.DateTimeField()
-    fecha_fin = models.DateTimeField(blank=True,null=True)
-    #creado_por = models.ForeignKey(User, on_delete=models.CASCADE) 
+    fecha = models.DateTimeField()
+    equipo1 = models.CharField(max_length= 45, default='Portuense F.C.')
+    equipo2 = models.CharField(max_length=45,default='')
 
     
     def __str__(self):
-        return self.titulo
+        return  f"{self.equipo1} VS {self.equipo2}"
                                    
                                    

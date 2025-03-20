@@ -4,3 +4,4 @@ from .models import *
 admin.site.register(Jugador)
 admin.site.register(Carpeta)
 admin.site.register(PDF)
+admin.site.register(Evento)

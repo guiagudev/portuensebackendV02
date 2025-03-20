@@ -49,6 +49,6 @@ class PDFSerializer(serializers.ModelSerializer):
 class EventoSerializer(serializers.ModelSerializer):
      class Meta:
          model = Evento
-         fields = ['id', 'titulo', 'descripcion', 'fecha_inicio', 'fecha_fin']
+         fields = '__all__'
         # read_only_fields = ['creado_por']
 
