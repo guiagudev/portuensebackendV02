@@ -28,18 +28,34 @@ class JugadorViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """
-        Filtra los jugadores basados en el parámetro 'equipo' en la consulta
+        Filtra los jugadores en base a los parámetros 'equipo', 'categoria' y 'subcategoria'
         """
         queryset = super().get_queryset()
 
-        # Obtener el filtro de 'equipo' desde los parámetros de la solicitud
+    # Obtener los parámetros de consulta
         equipo = self.request.query_params.get('equipo', None)
-        
+        categoria = self.request.query_params.get('categoria', None)
+        subcategoria = self.request.query_params.get('subcategoria', None)
+        nombre = self.request.query_params.get('nombre', None)
+        edad_min = self.request.query_params.get('edad_min',None)
+        edad_max = self.request.query_params.get('edad_max',None)
+
+    # Aplicar filtros si los parámetros están presentes
         if equipo:
-            # Filtrar por equipo si el parámetro está presente
             queryset = queryset.filter(equipo=equipo)
-        
+        if categoria:
+            queryset = queryset.filter(categoria=categoria)
+        if subcategoria:
+            queryset = queryset.filter(subcategoria=subcategoria)
+        if nombre:
+            queryset = queryset.filter(nombre__icontains=nombre)
+        if edad_min:
+            queryset = queryset.filter(edad__gte=edad_min)
+        if edad_max:
+            queryset = queryset.filter(edad__lte=edad_max)
+
         return queryset
+
     def perform_update(self, serializer):
         """
         Sobrescribe el método perform_update para agregar validación o depuración antes de guardar

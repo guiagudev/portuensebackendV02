@@ -8,6 +8,7 @@ class Jugador(models.Model):
         ('INF', 'Infantil'),
         ('CAD', 'Cadete'),
         ('JUV', 'Juvenil'),
+        ('SEN', 'Sénior')
     ]
     OPCIONES_SUBCATEGORIA = [
         ('A', 'A'),
@@ -21,8 +22,7 @@ class Jugador(models.Model):
     ]
     nombre = models.CharField(max_length=100)
     p_apellido = models.CharField(max_length=100, null=True)
-    s_apellido = models.CharField(max_length=100, blank = True)
-    
+    s_apellido = models.CharField(max_length=100, blank = True)   
     categoria = models.CharField(max_length=20, choices = OPCIONES_CATEGORIA, default='CAD')
     subcategoria = models.CharField(max_length=6, choices =OPCIONES_SUBCATEGORIA, default='A')
     equipo = models.CharField(max_length=10, choices=OPCIONES_EQUIPO, default = "M")
