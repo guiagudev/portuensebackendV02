@@ -50,9 +50,9 @@ class JugadorViewSet(viewsets.ModelViewSet):
         if nombre:
             queryset = queryset.filter(nombre__icontains=nombre)
         if edad_min:
-            queryset = queryset.filter(edad__gte=edad_min)
+            queryset = queryset.filter(edad__gte=int(edad_min))
         if edad_max:
-            queryset = queryset.filter(edad__lte=edad_max)
+            queryset = queryset.filter(edad__lte=int(edad_max))
 
         return queryset
 
