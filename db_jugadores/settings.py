@@ -100,18 +100,11 @@ WSGI_APPLICATION = 'db_jugadores.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mysql',  # Nombre de la base de datos que creaste
-        'USER': 'root',  # Usuario de la BBDD
-        'PASSWORD': 'my-secret-pw',  # Contraseña del usuario
-        'HOST': 'localhost',  # Conectando localmente a Docker
-        'PORT': '35008',  # Puerto expuesto en tu máquina
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-            'charset': 'utf8mb4',
-        },
+        'ENGINE': 'django.db.backends.sqlite3',  # Cambiar el backend a sqlite3
+        'NAME': BASE_DIR / 'db.sqlite3',  # Ruta de la base de datos SQLite (en el directorio base del proyecto)
     }
 }
+
 
 
 
