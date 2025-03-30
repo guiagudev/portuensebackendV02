@@ -42,7 +42,13 @@ REST_FRAMEWORK = {
     ),
     'ACCESS_TOKEN_LIFETIME': timedelta(days=30),  # Ejemplo: 30 días
     'REFRESH_TOKEN_LIFETIME': timedelta(days=60),
+    
+    # settings.py
+
+    
 }
+
+
 
 
 MIDDLEWARE = [

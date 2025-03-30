@@ -8,10 +8,12 @@ from rest_framework import filters
 from rest_framework.permissions import IsAuthenticated
 
 
+
         
 class JugadorViewSet(viewsets.ModelViewSet):
     queryset = Jugador.objects.all()
     serializer_class = JugadorSerializer
+    
     #permission_classes = [IsAuthenticated]
     
     # Método para obtener las opciones para poblar dropdowns
