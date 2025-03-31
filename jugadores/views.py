@@ -14,7 +14,7 @@ class JugadorViewSet(viewsets.ModelViewSet):
     queryset = Jugador.objects.all()
     serializer_class = JugadorSerializer
     
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     # Método para obtener las opciones para poblar dropdowns
     @action(detail=False, methods=['get'])
@@ -101,7 +101,7 @@ class PDFViewSet(viewsets.ModelViewSet):
 class EventoViewSet (viewsets.ModelViewSet):
     queryset = Evento.objects.all()
     serializer_class = EventoSerializer
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     
   #  def perform_create(self, serializer):
