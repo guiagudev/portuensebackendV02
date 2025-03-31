@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Jugador, Carpeta,PDF, Evento
+from .models import Jugador, Carpeta,PDF, Evento,CarpetaInformes, Informe
 
 class JugadorSerializer(serializers.ModelSerializer):
     # Usamos ChoiceField para los campos
@@ -39,7 +39,14 @@ class CarpetaSerializer(serializers.ModelSerializer):
         # Aquí estamos accediendo a las subcarpetas a través de la relación inversa
         # "subcarpetas" es el `related_name` que definimos en `ForeignKey` para la relación recursiva
         return CarpetaSerializer(obj.subcarpetas.all(), many=True).data if obj.subcarpetas.exists() else []
-
+class CarpetaInformesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarpetaInformes
+        fields= '__all__'
+class Informe(serializers.ModelSerializer):
+    class Meta:
+        model = Informe
+        fields= '__all__'
 
 class PDFSerializer(serializers.ModelSerializer):
     class Meta:

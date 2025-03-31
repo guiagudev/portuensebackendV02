@@ -40,7 +40,23 @@ class Carpeta(models.Model):
     
     def __str__(self):
         return f"{self.nombre} {self.jugador.nombre}"
-    
+
+class CarpetaInformes(models.Model):
+    nombre = models.CharField(max_length=50)
+    def __str__(self):
+         return f"{self.nombre}"
+class Informe (models.Model):
+    carpeta = models.ForeignKey(CarpetaInformes, related_name='informes', on_delete = models.CASCADE, null=True, blank = True)
+    archivo = models.CharField(max_length=255, blank=True)
+    nombre = models.CharField(max_length=255, blank=True, null=True)
+    url = models.URLField(max_length=500, blank=True, null=True)
+    def save(self, *args, **kwargs):
+        if not self.nombre:
+            self.nombre = self.archivo.name.split('/')[-1]
+            super().save(*args, **kwargs)
+    def __str__(self):
+        return f"{self.nombre} - {self.carpeta.nombre}"
+            
 class PDF (models.Model):
     carpeta = models.ForeignKey(Carpeta, related_name='pdfs', on_delete = models.CASCADE, null=True, blank = True)
     archivo = models.FileField(upload_to='pdfs')
