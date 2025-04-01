@@ -1,8 +1,8 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from .models import Jugador, Carpeta, PDF, Evento
-from .serializers import JugadorSerializer, CarpetaSerializer, PDFSerializer , EventoSerializer
+from .models import *
+from .serializers import *
 from django.contrib.auth import authenticate, login
 from rest_framework import filters
 from rest_framework.permissions import IsAuthenticated
@@ -64,7 +64,22 @@ class JugadorViewSet(viewsets.ModelViewSet):
         """
         jugador = serializer.save()  # Guarda el objeto actualizado
         print(f"Jugador {jugador.id} actualizado con éxito")  # Aquí podemos hacer una depuración
+
+class FolderGroupViewSet(viewsets.ModelViewSet):
+    queryset = FolderGroup.objects.all()
+    serializer_class = FolderGroupSerializer
+
+class ExcelFileViewSet(viewsets.ModelViewSet):
+    queryset = ExcelFile.objects.all()
+    serializer_class = ExcelFileSerializer
+    def get_queryset(self):
+        queryset = ExcelFile.objects.all()
+        folder_id = self.request.query_params.get('folder')  # Captura el parámetro de la URL
         
+        if folder_id:  
+            queryset = queryset.filter(folder_id=folder_id)  # Filtra los archivos por carpeta
+
+        return queryset       
 class CarpetaViewSet(viewsets.ModelViewSet):
     queryset = Carpeta.objects.all()  # Definir un queryset básico
     serializer_class = CarpetaSerializer
@@ -84,12 +99,10 @@ class CarpetaViewSet(viewsets.ModelViewSet):
 
         return queryset
 class PDFViewSet(viewsets.ModelViewSet): 
-    
-    
-    
+      
     queryset = PDF.objects.all()
     serializer_class = PDFSerializer
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         # Aquí puedes asignar automáticamente la carpeta al PDF

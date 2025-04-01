@@ -40,7 +40,27 @@ class Carpeta(models.Model):
     
     def __str__(self):
         return f"{self.nombre} {self.jugador.nombre}"
+
+class FolderGroup(models.Model):
+    name = models.CharField(max_length=255, unique=True)
     
+
+    def __str__(self):
+        return self.name
+         
+class ExcelFile(models.Model):
+    folder = models.ForeignKey(FolderGroup, on_delete=models.CASCADE, related_name="excels")
+    file = models.FileField(upload_to="excels/")
+    name = models.CharField(max_length=255, blank=True, null=True)  # Nuevo campo opcional
+
+    def __str__(self):
+        return self.name if self.name else self.file.name.split("/")[-1]
+
+    def __str__(self):
+        return self.file.name
+
+    
+            
 class PDF (models.Model):
     carpeta = models.ForeignKey(Carpeta, related_name='pdfs', on_delete = models.CASCADE, null=True, blank = True)
     archivo = models.FileField(upload_to='pdfs')
