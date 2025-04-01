@@ -41,21 +41,25 @@ class Carpeta(models.Model):
     def __str__(self):
         return f"{self.nombre} {self.jugador.nombre}"
 
-class CarpetaInformes(models.Model):
-    nombre = models.CharField(max_length=50)
+class FolderGroup(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    
+
     def __str__(self):
-         return f"{self.nombre}"
-class Informe (models.Model):
-    carpeta = models.ForeignKey(CarpetaInformes, related_name='informes', on_delete = models.CASCADE, null=True, blank = True)
-    archivo = models.CharField(max_length=255, blank=True)
-    nombre = models.CharField(max_length=255, blank=True, null=True)
-    url = models.URLField(max_length=500, blank=True, null=True)
-    def save(self, *args, **kwargs):
-        if not self.nombre:
-            self.nombre = self.archivo.name.split('/')[-1]
-            super().save(*args, **kwargs)
+        return self.name
+         
+class ExcelFile(models.Model):
+    folder = models.ForeignKey(FolderGroup, on_delete=models.CASCADE, related_name="excels")
+    file = models.FileField(upload_to="excels/")
+    name = models.CharField(max_length=255, blank=True, null=True)  # Nuevo campo opcional
+
     def __str__(self):
-        return f"{self.nombre} - {self.carpeta.nombre}"
+        return self.name if self.name else self.file.name.split("/")[-1]
+
+    def __str__(self):
+        return self.file.name
+
+    
             
 class PDF (models.Model):
     carpeta = models.ForeignKey(Carpeta, related_name='pdfs', on_delete = models.CASCADE, null=True, blank = True)

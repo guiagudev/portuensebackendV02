@@ -65,9 +65,21 @@ class JugadorViewSet(viewsets.ModelViewSet):
         jugador = serializer.save()  # Guarda el objeto actualizado
         print(f"Jugador {jugador.id} actualizado con éxito")  # Aquí podemos hacer una depuración
 
-class CarpetaInformeViewSet(viewsets.ModelViewSet):
-    queryset = CarpetaInformes.objects.all()
-    serializer_class = CarpetaInformesSerializer        
+class FolderGroupViewSet(viewsets.ModelViewSet):
+    queryset = FolderGroup.objects.all()
+    serializer_class = FolderGroupSerializer
+
+class ExcelFileViewSet(viewsets.ModelViewSet):
+    queryset = ExcelFile.objects.all()
+    serializer_class = ExcelFileSerializer
+    def get_queryset(self):
+        queryset = ExcelFile.objects.all()
+        folder_id = self.request.query_params.get('folder')  # Captura el parámetro de la URL
+        
+        if folder_id:  
+            queryset = queryset.filter(folder_id=folder_id)  # Filtra los archivos por carpeta
+
+        return queryset       
 class CarpetaViewSet(viewsets.ModelViewSet):
     queryset = Carpeta.objects.all()  # Definir un queryset básico
     serializer_class = CarpetaSerializer
@@ -102,7 +114,7 @@ class PDFViewSet(viewsets.ModelViewSet):
 class EventoViewSet (viewsets.ModelViewSet):
     queryset = Evento.objects.all()
     serializer_class = EventoSerializer
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     
   #  def perform_create(self, serializer):
