@@ -12,6 +12,7 @@ router.register(r'pdfs',PDFViewSet)
 router.register(r'eventos',EventoViewSet)
 router.register(r'folders', FolderGroupViewSet)
 router.register(r'files', ExcelFileViewSet)
+
 urlpatterns = [
     path('api/', include(router.urls)),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

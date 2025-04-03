@@ -1,5 +1,9 @@
 from rest_framework import serializers
 from .models import *
+class CategoriaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Categoria
+        fields = ['id','nombre']
 class JugadorSerializer(serializers.ModelSerializer):
     # Usamos ChoiceField para los campos
     categoria = serializers.ChoiceField(choices=Jugador.OPCIONES_CATEGORIA)
